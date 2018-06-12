@@ -1,11 +1,8 @@
 Issue Tracker
 ==============================================
-## Prerequisites
-You need the following tools to build the project:
-  * JDK 8 (**not 10**): http://www.oracle.com/technetwork/java/javase/downloads/index.html
-  * Maven (3.5+ recommended): https://maven.apache.org/download.cgi
-  
-When everything is installed and `PATH` is configured, run `mvn -version` to make sure that it is using JDK 8.
+## Time spent on task
+  * 8 hours spent on the study of the material
+  * 38 hours spent on the study of the material 
 
 ## Building
 Run the following command to build the project:
@@ -14,9 +11,14 @@ mvn clean install
 ```
 
 ## Running
+Create connection with database h2. (./h2.sh command).
 Run the following command:
 ```
 mvn exec:java
 ```
-
-Open your web browser and visit http://localhost. If everything is fine, you should see `Hello, world`.
+Open your web browser and visit http://localhost:1234/ 
+You'll see the login page. Enter data: login:admin password:123 (access right - full. It means, that you can add issues, update issues, delete issues, commenting issues, delete or update your comments and search issues).
+                                        login:jon password:123 (access right - view and update. It means, that you can add issues, update issues, commenting issues, delete or update your comments and search issues. But you can't delete issues).
+                                        login:alex password:123 (access right - only view. It means, that you can commenting issues, delete or update your comments and search issues. But you can't delete issues and update issues).
+Also you can singUp (access right - only view).
+After you'll see all issues.

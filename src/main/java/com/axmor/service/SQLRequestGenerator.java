@@ -1,6 +1,7 @@
 package com.axmor.service;
 
 
+import com.axmor.helpers.StringHelper;
 import com.axmor.service.interfaces.ISQLRequestGenerator;
 
 import java.text.SimpleDateFormat;
@@ -22,21 +23,10 @@ public class SQLRequestGenerator implements ISQLRequestGenerator {
             "statuses.status " +
             "FROM issues " +
             "JOIN statuses ON statuses.id = issues.status_id " +
+            "%s" +
             "ORDER BY issues.%s " +
             "LIMIT %d,%d";
-    private static final String SELECT_FOUND_ISSUES_PAGE = "SELECT " +
-            "issues.id, " +
-            "issues.name, " +
-            "issues.description, " +
-            "issues.date, " +
-            "issues.author, " +
-            "issues.status_id, " +
-            "statuses.status " +
-            "FROM issues " +
-            "JOIN statuses ON statuses.id = issues.status_id " +
-            "where name = '%s' " +
-            "ORDER BY issues.id " +
-            "LIMIT %d";
+
     private static final String SELECT_ISSUE_BY_ID = "SELECT " +
             "issues.id, " +
             "issues.name, " +
@@ -71,15 +61,16 @@ public class SQLRequestGenerator implements ISQLRequestGenerator {
             "JOIN statuses on statuses.id = comments.status_id " +
             "WHERE comments.id = %d";
     private static final String SELECT_FROM_STATUSES = "SELECT *FROM statuses";
-    private static final String SELECT_ISSUES_COUNT = "SELECT COUNT(issues.id) as count from issues";
+    private static final String SELECT_ISSUES_COUNT = "SELECT COUNT(issues.id) as count from issues %s";
     private static final String UPDATE_ISSUE = "UPDATE issues SET name='%s', description = '%s', status_id = %d WHERE id = %d";
-    private static final String UPDATE_COMMENT= "UPDATE comments SET name='%s', status_id = %d WHERE id = %d";
+    private static final String UPDATE_COMMENT = "UPDATE comments SET name='%s', status_id = %d WHERE id = %d";
     private static final String DELETE_ISSUE = "DELETE FROM issues WHERE id = %d";
     private static final String DELETE_COMMENT = "DELETE FROM comments WHERE id = %d";
     private static final String SELECT_USER_LOGIN_EXIST = "SELECT * FROM users where name = '%s'";
     private static final String SELECT_USER_EXIST = "SELECT * FROM users where name = '%s' and password = '%s'";
     private static final String INSERT_USER = "INSERT INTO users(name, password, access_right_id) VALUES('%s', '%s', %d,)";
     private static final String SELECT_USER_BY_LOGIN = "SELECT * FROM users where name = '%s'";
+    private static final String WHERE_NAME_NOT_NULL = "where name like '%%%s%%' ";
 
     private final java.text.DateFormat dateFormat;
 
@@ -106,16 +97,14 @@ public class SQLRequestGenerator implements ISQLRequestGenerator {
     @Override
     public String generateSelectAllIssuesRequest(
             String orderValue,
+            String name,
             int startIndex,
             int endIndex) {
-        return String.format(SELECT_FROM_ISSUES_AND_STATUSES_PAGE, orderValue, startIndex, endIndex);
-    }
-
-    @Override
-    public String generateSelectFoundIssuesRequest(
-            String name,
-            int maxCount) {
-        return String.format(SELECT_FOUND_ISSUES_PAGE, name, maxCount);
+        String where = "";
+        if (!StringHelper.isNullOrEmpty(name)) {
+            where = String.format(WHERE_NAME_NOT_NULL, name);
+        }
+        return String.format(SELECT_FROM_ISSUES_AND_STATUSES_PAGE, where, orderValue, startIndex, endIndex);
     }
 
     @Override
@@ -139,8 +128,12 @@ public class SQLRequestGenerator implements ISQLRequestGenerator {
     }
 
     @Override
-    public String generateSelectIssuesCountRequest() {
-        return SELECT_ISSUES_COUNT;
+    public String generateSelectIssuesCountRequest(String searchName) {
+        String where = "";
+        if (!StringHelper.isNullOrEmpty(searchName)) {
+            where = String.format(WHERE_NAME_NOT_NULL, searchName);
+        }
+        return String.format(SELECT_ISSUES_COUNT, where);
     }
 
     @Override
@@ -153,7 +146,7 @@ public class SQLRequestGenerator implements ISQLRequestGenerator {
     }
 
     @Override
-    public String generateUpdateCommentRequest (
+    public String generateUpdateCommentRequest(
             String name,
             int statusId,
             int id) {

@@ -41,8 +41,8 @@ public class IssueService implements IIssueService {
     }
 
     @Override
-    public int getPageCount() throws DataConnectionException {
-        String getIssuesRequest = requestGenerator.generateSelectIssuesCountRequest();
+    public int getPageCount(String searchName) throws DataConnectionException {
+        String getIssuesRequest = requestGenerator.generateSelectIssuesCountRequest(searchName);
         try (ResultSet issueCountResultSet = DriverManager
                 .getConnection(
                         settings.getDbHost(),
@@ -66,12 +66,13 @@ public class IssueService implements IIssueService {
 
     @Override
     public List <Issue> getIssues(
+            String searchName,
             int pageNumber,
             String sortValue)
             throws DataConnectionException {
         List <Issue> issueList = new ArrayList <>();
         int startIndex = ( pageNumber - 1 ) * PAGE_ITEM_COUNT;
-        String getIssuesRequest = requestGenerator.generateSelectAllIssuesRequest(sortValue, startIndex, PAGE_ITEM_COUNT);
+        String getIssuesRequest = requestGenerator.generateSelectAllIssuesRequest(sortValue, searchName, startIndex, PAGE_ITEM_COUNT);
 
         try (Statement statement = DriverManager
                 .getConnection(
@@ -139,29 +140,6 @@ public class IssueService implements IIssueService {
             logger.error("Comments can't be find. Check your generateSelectWithCommentsRequest.");
             ErrorHelper.trowDateBaseConnectionOrRequestException(e);
         }
-    }
-
-    @Override
-    public List <Issue> getFoundIssues(String name) throws DataConnectionException {
-        List <Issue> issueList = new ArrayList <>();
-        String getFoundIssuesRequest = requestGenerator.generateSelectFoundIssuesRequest(name, PAGE_ITEM_COUNT);
-        try (Statement statement = DriverManager
-                .getConnection(
-                        settings.getDbHost(),
-                        settings.getDbLogin(),
-                        settings.getDbPassword())
-                .createStatement();
-             ResultSet issueResultSet = statement.executeQuery(getFoundIssuesRequest)) {
-            while (issueResultSet.next()) {
-                Issue issue = IssueMapping.map(issueResultSet);
-                issueList.add(issue);
-            }
-        } catch (SQLException e) {
-            logger.error("Search failed. Check your generateSelectFoundIssuesRequest.");
-            ErrorHelper.trowDateBaseConnectionOrRequestException(e);
-        }
-
-        return issueList;
     }
 
     @Override

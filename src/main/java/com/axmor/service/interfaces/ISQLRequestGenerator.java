@@ -3,9 +3,9 @@ package com.axmor.service.interfaces;
 import java.util.Date;
 
 public interface ISQLRequestGenerator {
-    String generateSelectAllIssuesRequest(String orderValue, int startIndex, int endIndex);
+    String generateSelectAllIssuesRequest(String orderValue, String searchName, int startIndex, int endIndex);
 
-    String generateSelectFoundIssuesRequest(String name, int maxCount);
+//    String generateSelectFoundIssuesRequest(String name, int maxCount);
 
     String generateIssueByIdRequest(int id);
 
@@ -15,7 +15,7 @@ public interface ISQLRequestGenerator {
 
     String generateSelectStatusesRequest();
 
-    String generateSelectIssuesCountRequest();
+    String generateSelectIssuesCountRequest(String searchName);
 
     String generateCreateIssueRequest(String name, String author, String description, Date creationDate, int statusId);
 

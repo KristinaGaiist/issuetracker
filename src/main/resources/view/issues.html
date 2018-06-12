@@ -8,11 +8,11 @@
 </head>
 <body>
 <h1>Issue Tracker</h1>
-<form class="inline-button" action='/showAll' method='get'>
+<form class="inline-button" action='/issues' method='get'>
     <input class="bubbly-button" type="submit" value="Show all">
 </form>
-<form class="inline-button" action="/search" method="get">
-    <input class="search" type="text" name="search" placeholder="Search..">
+<form class="inline-button" method="get">
+    <input class="search" type="text" name="searchName" placeholder="Search.." value="${hasSearchName?then(searchName, '')}">
 </form>
 <table id="tableI">
     <thead>
@@ -40,7 +40,7 @@
     <a href="#">&laquo;</a>
     <#list pageList as page>
         <#if sortValue == "">
-            <a href="?pageIndex=${page}">${page}</a>
+            <a href="?pageIndex=${page}${hasSearchName?then('&searchName=' + searchName, '')}">${page}</a>
         <#else>
             <a href="?pageIndex=${page}&sortValue=${sortValue}">${page}</a>
         </#if>

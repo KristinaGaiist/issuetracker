@@ -7,13 +7,11 @@ import com.axmor.models.Status;
 import java.util.List;
 
 public interface IIssueService {
-    int getPageCount() throws DataConnectionException;
+    int getPageCount(String searchName) throws DataConnectionException;
 
-    List<Issue> getIssues(int pageNumber, String sortValue) throws DataConnectionException;
+    List<Issue> getIssues(String searchName, int pageNumber, String sortValue) throws DataConnectionException;
 
     Issue getIssueById(int id) throws DataConnectionException;
-
-    List <Issue> getFoundIssues(String name) throws DataConnectionException;
 
     List <Status> getStatuses() throws DataConnectionException;
 

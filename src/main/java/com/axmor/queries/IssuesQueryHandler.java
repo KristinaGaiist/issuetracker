@@ -53,8 +53,9 @@ public class IssuesQueryHandler implements Route {
         }
 
         int pageCount;
+        String searchName = request.queryParams("searchName");
         try {
-            pageCount = issueService.getPageCount();
+            pageCount = issueService.getPageCount(searchName);
         } catch (DataConnectionException e) {
             response.redirect("/error");
             return null;
@@ -69,13 +70,13 @@ public class IssuesQueryHandler implements Route {
         List <Issue> issueList;
         if(StringHelper.isNullOrEmpty(sortValue)) {
             try {
-                issueList = issueService.getIssues(pageNumber, "id");
+                issueList = issueService.getIssues(searchName, pageNumber, "id");
             } catch (DataConnectionException e) {
                 return null;
             }
         } else {
             try {
-                issueList = issueService.getIssues(pageNumber, sortValue);
+                issueList = issueService.getIssues(searchName, pageNumber, sortValue);
             } catch (DataConnectionException e) {
                 response.redirect("/error");
                 return null;
@@ -86,6 +87,8 @@ public class IssuesQueryHandler implements Route {
         model.put("issues", issueList);
         model.put("pageList", pageList);
         model.put("sortValue", sortValue == null ? ApplicationConstants.EMPTY : sortValue);
+        model.put("hasSearchName", !StringHelper.isNullOrEmpty(searchName));
+        model.put("searchName", searchName);
         ModelAndView modelAndView = new ModelAndView(model, "view/issues.html");
 
         return freeMarkerEngine.render(modelAndView);

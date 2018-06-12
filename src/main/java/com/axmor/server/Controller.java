@@ -47,8 +47,6 @@ public class Controller {
         get("/", new LogInQueryHandler(freeMarkerEngine, userService));
         get("/register", new RegisterQueryHandler(freeMarkerEngine));
         get("/issues", new IssuesQueryHandler(freeMarkerEngine, issueService, userService, redirectService));
-        get("/search", new SearchIssuesQueryHandler(freeMarkerEngine, issueService, userService, redirectService));
-        get("/showAll", new IssuesQueryHandler(freeMarkerEngine, issueService, userService, redirectService));
         get("/show", new IssueQueryHandler(freeMarkerEngine, issueService, userService, redirectService));
         get("/create", new CreateIssueQueryHandler(freeMarkerEngine, redirectService));
         get("/update", new UpdateIssueQueryHandler(freeMarkerEngine, issueService, redirectService));

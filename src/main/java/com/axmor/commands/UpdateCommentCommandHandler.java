@@ -50,17 +50,17 @@ public class UpdateCommentCommandHandler implements Route {
         ArgumentHelper.ensureNotNull("commentId", commentId);
         ArgumentHelper.ensureNotNull("status", status);
 
+        Comment comment = commentService.getCommentById(commentId);
         List <String> validationErrors = new ArrayList <>();
         if (!commentService.validateCreationOrUpdateComment(commentText, validationErrors)){
             HashMap <String, Object> model = new HashMap <>();
-            Comment comment = commentService.getCommentById(commentId);
             List <Status> statusList = issueService.getStatuses();
             Issue issue = issueService.getIssueById(comment.getIssueId());
             model.put("comment", comment);
             model.put("issue", issue);
             model.put("statuses", statusList);
             model.put("validationErrors", validationErrors);
-            ModelAndView modelAndView = new ModelAndView(model, "view/update.html");
+            ModelAndView modelAndView = new ModelAndView(model, "view/updateComment.html");
 
             return freeMarkerEngine.render(modelAndView);
         }
@@ -71,7 +71,8 @@ public class UpdateCommentCommandHandler implements Route {
             response.redirect("/error");
             return null;
         }
-        response.redirect("/issues");
+
+        response.redirect(String.format("/show?issueId=%d", comment.getIssueId()));
 
         return null;
     }
