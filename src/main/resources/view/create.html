@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>CreateIssue</title>
+    <link rel="stylesheet" href="/css/tableStyle.css">
+    <link rel="stylesheet" href="/css/generalStyle.css">
+</head>
+<body>
+<p>Create Issue</p>
+<a href="/issues">
+</a>
+<ul class="exception">
+    <#list validationErrors as error>
+        <li>${error}</li>
+    </#list>
+</ul>
+<form class="inline-button" method='post'>
+    <p>
+        <b>Name: </b>
+        <input class="text-type" type="text" name="issueName" placeholder="Task name..." value="${issueName}">
+    </p>
+    <p>
+        <b>Description: </b><br>
+        <textarea class="text-area" name="description">${description}</textarea>
+    </p>
+    <input class="bubbly-button" type="submit" value="Save">
+</form>
+<a href="/issues">
+    <input class="bubbly-button" type="submit" value="Cancel">
+</a>
+</body>
+</html>

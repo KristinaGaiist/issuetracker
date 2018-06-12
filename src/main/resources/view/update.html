@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="/css/tableStyle.css">
+    <link rel="stylesheet" href="/css/generalStyle.css">
+    <title>IssueTracker</title>
+</head>
+<body>
+<h1>
+    Update Issue
+</h1>
+<ul class="exception">
+    <#list validationErrors as error>
+        <li>${error}</li>
+    </#list>
+</ul>
+<form class="inline-button" method='post'>
+    <p>
+        <b>Name: </b>
+        <input class="text-type" type="text" name="issueName" placeholder="${issue.getName()}">
+    </p>
+    <p>
+        <b>Status </b>
+        <select class="text-type" id="status" name="status">
+            <#list statuses as status>
+                <#if status.getId() == issue.getStatus().getId()>
+                    <option value="${status.getId()}" selected>${status.getName()}</option>
+                <#else>
+                    <option value="${status.getId()}">${status.getName()}</option>
+                </#if>
+            </#list>
+        </select>
+    </p>
+    <p>
+        <b>Description: </b><br>
+        <textarea class="text-area" type="text" name="description">
+                ${issue.getDescription()}
+            </textarea>
+    </p>
+    <p>
+        <b>Comment: </b><br>
+    </p>
+    <input class="bubbly-button" type="submit" value="Save">
+</form>
+<a href="/show?issueId=${issue.getId()}"><input class="bubbly-button" type="submit" value="Cancel"></a>
+</body>
+</html>

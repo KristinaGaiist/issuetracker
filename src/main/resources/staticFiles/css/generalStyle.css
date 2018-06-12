@@ -1,0 +1,145 @@
+$button-bg: $fuschia;
+
+body{
+  font-size: 6px;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  text-align: center;
+}
+
+.bubbly-button{
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-size: 1em;
+  padding: 0.5em 0.7em;
+  margin-bottom: 10px;
+  color: Crimson;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 2px 25px rgba(255, 0, 130, 0.5);
+  }
+
+ h1 {
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+    color: white;
+    word-wrap: break-word;
+    margin: 1%
+}
+
+h2 {
+    font-size: 15px;
+    color: white;
+    text-decoration: underline;
+    display:inline;
+    line-height: 1.5;
+    word-wrap: break-word;
+    margin: 2%
+}
+
+h3 {
+    font-size: 15px;
+    text-indent: 50px;
+    color: white;
+    display:inline;
+    line-height: 1.8;
+    word-wrap: break-word;
+}
+
+h2.italic {
+    font-style: italic;
+    word-wrap: break-word;
+    margin: 10px 5px 0px 20px;
+    padding: 0px 0px 0px 2px;
+}
+
+h3.italic {
+    margin: 10px 5px 0px 38px;
+    padding: 0px 0px 0px 2px;
+    line-height: 1.8;
+    word-wrap: break-word;
+}
+
+.text-type {
+    width: 15%;
+    padding: 5px 5px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.text-area {
+    width: 300px;
+	height: 70px;
+	border: 0.5px solid #cccccc;
+	padding: 5px;
+	margin: 8px 0;
+	border-radius: 4px;
+	font-family: Tahoma, sans-serif;
+}
+
+form.inline-button {
+    display: initial;
+}
+
+.search {
+ width: 300px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    font-size: 15px;
+    background-color: white;
+    background-image: url('/img/search.png');
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
+.search:focus {
+    width: 50%;
+}
+
+.semi-transparent-button {
+display: inline;
+box-sizing: border-box;
+margin: 0 auto;
+padding: 4px;
+width: 25%;
+max-width: 200px;
+background: #fff;
+background: rgba(255, 255, 255, 0.5);
+border-radius: 20px;
+color: #fff;
+text-align: center;
+text-decoration: none;
+letter-spacing: 1px;
+transition: all 0.3s ease-out;
+}
+
+.pagination {
+    display: inline-block;
+}
+
+.pagination a {
+    color: white;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+ul.exception {
+    list-style-type: circle;
+    color: red;
+}
+
+div.round {
+    border: 1px solid pink;
+    padding: 15px;
+    width: 320px;
+    height: 270px;
+    text-align: justify;
+}

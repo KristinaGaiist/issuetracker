@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="/css/tableStyle.css">
+    <link rel="stylesheet" href="/css/generalStyle.css">
+    <title>IssueTracker</title>
+</head>
+<body>
+<h1>
+    Update Comment:
+</h1>
+<ul class="exception">
+    <#list validationErrors as error>
+        <li>${error}</li>
+    </#list>
+</ul>
+<form class="inline-button" method='post'>
+    <p>
+        <b>Status </b>
+        <select class="text-type" id="status" name="status">
+            <#list statuses as status>
+                <#if status.getId() == comment.getStatus().getId()>
+                    <option value="${status.getId()}" selected>${status.getName()}</option>
+                    <#else>
+                        <option value="${status.getId()}">${status.getName()}</option>
+                </#if>
+            </#list>
+        </select>
+    </p>
+    <p>
+        <b>Text: </b><br>
+        <textarea class="text-area" type="text" name="description">
+            ${comment.getName()}
+            </textarea>
+    </p>
+    <input class="bubbly-button" type="submit" value="Save">
+</form>
+<a href="/show?issueId=${comment.getIssueId()}"><input class="bubbly-button" type="submit" value="Cancel"></a>
+</body>
+</html>

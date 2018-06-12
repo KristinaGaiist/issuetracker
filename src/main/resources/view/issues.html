@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>IssueTracker</title>
+    <link rel="stylesheet" href="/css/tableStyle.css">
+    <link rel="stylesheet" href="/css/generalStyle.css">
+</head>
+<body>
+<h1>Issue Tracker</h1>
+<form class="inline-button" action='/showAll' method='get'>
+    <input class="bubbly-button" type="submit" value="Show all">
+</form>
+<form class="inline-button" action="/search" method="get">
+    <input class="search" type="text" name="search" placeholder="Search..">
+</form>
+<table id="tableI">
+    <thead>
+    <tr>
+        <th><a href="/issues?sortValue=name">Name</a></th>
+        <th><a href="/issues?sortValue=date">Date</a></th>
+        <th><a href="/issues?sortValue=status_id">Status</a></th>
+    </tr>
+    </thead>
+    <tbody>
+    <#list issues as issue>
+        <tr>
+            <td>
+                <a href="/show?issueId=${issue.getId()}">
+                    ${issue.getName()}
+                </a>
+            </td>
+            <td>${issue.getDate()}</td>
+            <td>${issue.getStatus().getName()}</td>
+        </tr>
+    </#list>
+    </tbody>
+</table>
+<div class="pagination">
+    <a href="#">&laquo;</a>
+    <#list pageList as page>
+        <#if sortValue == "">
+            <a href="?pageIndex=${page}">${page}</a>
+        <#else>
+            <a href="?pageIndex=${page}&sortValue=${sortValue}">${page}</a>
+        </#if>
+    </#list>
+    <a href="#">&raquo;</a>
+</div>
+<br>
+<form class="inline-button" action='/create' method='get'>
+    <input class="bubbly-button" type="submit" ${hidden} value="New issue">
+</form>
+
+<form class="inline-button" action='/out' method='post'>
+    <input class="bubbly-button" type="submit" value="Logout">
+</form>
+
+</body>
+</html>

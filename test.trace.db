@@ -1,0 +1,170 @@
+06-06 12:40:51 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Синтаксическая ошибка в выражении SQL "INSERT INTO TEST VALUES('1', HELLO[*]')"
+Syntax error in SQL statement "INSERT INTO TEST VALUES('1', HELLO[*]')"; SQL statement:
+INSERT INTO TEST VALUES('1', HELLO') [42000-148]
+06-06 12:41:10 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Таблица "TEST" не найдена
+Table "TEST" not found; SQL statement:
+INSERT INTO TEST VALUES('1', 'HELLO') [42102-148]
+06-06 12:45:45 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Таблица "TEST" не найдена
+Table "TEST" not found; SQL statement:
+INSERT INTO TEST VALUES('1', 'HELLO') [42102-148]
+06-06 12:48:01 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Недопустимое значение "1" для параметра "parameterIndex"
+Invalid value "1" for parameter "parameterIndex" [90008-148]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:327)
+	at org.h2.message.DbException.get(DbException.java:167)
+	at org.h2.message.DbException.getInvalidValueException(DbException.java:213)
+	at org.h2.jdbc.JdbcPreparedStatement.setParameter(JdbcPreparedStatement.java:1259)
+	at org.h2.jdbc.JdbcPreparedStatement.setString(JdbcPreparedStatement.java:323)
+	at koreneva.issue.tracker.system.MainClass.main(MainClass.java:27)
+06-06 12:48:18 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Таблица "TEST" уже существует
+Table "TEST" already exists; SQL statement:
+CREATE TABLE TEST (id int, name text) [42101-148]
+06-06 12:48:37 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Таблица "TEST" уже существует
+Table "TEST" already exists; SQL statement:
+CREATE TABLE TEST (id int, name text) [42101-148]
+06-06 12:56:54 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Таблица "TEST" не найдена
+Table "TEST" not found; SQL statement:
+INSERT INTO TEST VALUES('1', 'HELLO') [42102-148]
+06-06 12:57:41 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Недопустимое значение "0" для параметра "parameterIndex"
+Invalid value "0" for parameter "parameterIndex" [90008-148]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:327)
+	at org.h2.message.DbException.get(DbException.java:167)
+	at org.h2.message.DbException.getInvalidValueException(DbException.java:213)
+	at org.h2.jdbc.JdbcPreparedStatement.setParameter(JdbcPreparedStatement.java:1259)
+	at org.h2.jdbc.JdbcPreparedStatement.setString(JdbcPreparedStatement.java:323)
+	at koreneva.issue.tracker.system.MainClass.main(MainClass.java:27)
+06-06 12:57:59 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Недопустимое значение "1" для параметра "parameterIndex"
+Invalid value "1" for parameter "parameterIndex" [90008-148]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:327)
+	at org.h2.message.DbException.get(DbException.java:167)
+	at org.h2.message.DbException.getInvalidValueException(DbException.java:213)
+	at org.h2.jdbc.JdbcPreparedStatement.setParameter(JdbcPreparedStatement.java:1259)
+	at org.h2.jdbc.JdbcPreparedStatement.setString(JdbcPreparedStatement.java:323)
+	at koreneva.issue.tracker.system.MainClass.main(MainClass.java:27)
+06-06 18:29:06 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Столбец "TASK" не найден
+Column "TASK" not found; SQL statement:
+INSERT INTO TEST(issue) VALUES('task1') [42122-148]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:327)
+	at org.h2.message.DbException.get(DbException.java:167)
+	at org.h2.message.DbException.get(DbException.java:144)
+	at org.h2.table.Table.getColumn(Table.java:556)
+	at org.h2.command.Parser.parseColumnList(Parser.java:759)
+	at org.h2.command.Parser.parseInsert(Parser.java:930)
+	at org.h2.command.Parser.parsePrepared(Parser.java:371)
+	at org.h2.command.Parser.parse(Parser.java:275)
+	at org.h2.command.Parser.parse(Parser.java:247)
+	at org.h2.command.Parser.prepare(Parser.java:201)
+	at org.h2.command.Parser.prepareCommand(Parser.java:214)
+	at org.h2.engine.Session.prepareLocal(Session.java:425)
+	at org.h2.engine.Session.prepareCommand(Session.java:374)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1056)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:165)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:153)
+	at koreneva.issue.tracker.system.dataBase.Test.test(Test.java:26)
+	at koreneva.issue.tracker.system.Server.start(Server.java:23)
+	at koreneva.issue.tracker.system.MainClass.main(MainClass.java:8)
+06-06 18:29:31 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Столбец "TASK" не найден
+Column "TASK" not found; SQL statement:
+INSERT INTO TEST(issue) VALUES('task1') [42122-148]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:327)
+	at org.h2.message.DbException.get(DbException.java:167)
+	at org.h2.message.DbException.get(DbException.java:144)
+	at org.h2.table.Table.getColumn(Table.java:556)
+	at org.h2.command.Parser.parseColumnList(Parser.java:759)
+	at org.h2.command.Parser.parseInsert(Parser.java:930)
+	at org.h2.command.Parser.parsePrepared(Parser.java:371)
+	at org.h2.command.Parser.parse(Parser.java:275)
+	at org.h2.command.Parser.parse(Parser.java:247)
+	at org.h2.command.Parser.prepare(Parser.java:201)
+	at org.h2.command.Parser.prepareCommand(Parser.java:214)
+	at org.h2.engine.Session.prepareLocal(Session.java:425)
+	at org.h2.engine.Session.prepareCommand(Session.java:374)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1056)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:165)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:153)
+	at koreneva.issue.tracker.system.dataBase.Test.test(Test.java:26)
+	at koreneva.issue.tracker.system.Server.start(Server.java:23)
+	at koreneva.issue.tracker.system.MainClass.main(MainClass.java:8)
+06-06 18:29:48 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Столбец "TASK" не найден
+Column "TASK" not found; SQL statement:
+INSERT INTO TEST(issue) VALUES('task1') [42122-148]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:327)
+	at org.h2.message.DbException.get(DbException.java:167)
+	at org.h2.message.DbException.get(DbException.java:144)
+	at org.h2.table.Table.getColumn(Table.java:556)
+	at org.h2.command.Parser.parseColumnList(Parser.java:759)
+	at org.h2.command.Parser.parseInsert(Parser.java:930)
+	at org.h2.command.Parser.parsePrepared(Parser.java:371)
+	at org.h2.command.Parser.parse(Parser.java:275)
+	at org.h2.command.Parser.parse(Parser.java:247)
+	at org.h2.command.Parser.prepare(Parser.java:201)
+	at org.h2.command.Parser.prepareCommand(Parser.java:214)
+	at org.h2.engine.Session.prepareLocal(Session.java:425)
+	at org.h2.engine.Session.prepareCommand(Session.java:374)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1056)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:165)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:153)
+	at koreneva.issue.tracker.system.dataBase.Test.test(Test.java:26)
+	at koreneva.issue.tracker.system.Server.start(Server.java:23)
+	at koreneva.issue.tracker.system.MainClass.main(MainClass.java:8)
+06-06 18:30:03 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Значение NULL не разрешено для поля "ID"
+NULL not allowed for column "ID"; SQL statement:
+INSERT INTO tasks(issue) VALUES('task1') [90006-148]
+06-06 18:30:37 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Неверное количество столбцов
+Column count does not match; SQL statement:
+INSERT INTO tasks(issue) VALUES('1', 'task1') [21002-148]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:327)
+	at org.h2.message.DbException.get(DbException.java:167)
+	at org.h2.message.DbException.get(DbException.java:144)
+	at org.h2.message.DbException.get(DbException.java:133)
+	at org.h2.command.dml.Insert.prepare(Insert.java:225)
+	at org.h2.command.Parser.prepare(Parser.java:202)
+	at org.h2.command.Parser.prepareCommand(Parser.java:214)
+	at org.h2.engine.Session.prepareLocal(Session.java:425)
+	at org.h2.engine.Session.prepareCommand(Session.java:374)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1056)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:165)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:153)
+	at koreneva.issue.tracker.system.dataBase.Test.test(Test.java:26)
+	at koreneva.issue.tracker.system.Server.start(Server.java:23)
+	at koreneva.issue.tracker.system.MainClass.main(MainClass.java:8)
+06-06 18:31:07 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Значение NULL не разрешено для поля "ID"
+NULL not allowed for column "ID"; SQL statement:
+INSERT INTO tasks(issue) VALUES('task1') [90006-148]
+06-06 18:31:39 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Значение NULL не разрешено для поля "ID"
+NULL not allowed for column "ID"; SQL statement:
+INSERT INTO tasks(issue) VALUES('task1') [90006-148]
+06-06 18:32:20 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Неверное количество столбцов
+Column count does not match; SQL statement:
+INSERT INTO tasks(issue) VALUES(1, 'task1') [21002-148]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:327)
+	at org.h2.message.DbException.get(DbException.java:167)
+	at org.h2.message.DbException.get(DbException.java:144)
+	at org.h2.message.DbException.get(DbException.java:133)
+	at org.h2.command.dml.Insert.prepare(Insert.java:225)
+	at org.h2.command.Parser.prepare(Parser.java:202)
+	at org.h2.command.Parser.prepareCommand(Parser.java:214)
+	at org.h2.engine.Session.prepareLocal(Session.java:425)
+	at org.h2.engine.Session.prepareCommand(Session.java:374)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1056)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:165)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:153)
+	at koreneva.issue.tracker.system.dataBase.Test.test(Test.java:27)
+	at koreneva.issue.tracker.system.Server.start(Server.java:23)
+	at koreneva.issue.tracker.system.MainClass.main(MainClass.java:8)
