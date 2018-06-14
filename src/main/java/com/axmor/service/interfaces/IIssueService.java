@@ -4,12 +4,13 @@ import com.axmor.exceptions.DataConnectionException;
 import com.axmor.models.Issue;
 import com.axmor.models.Status;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface IIssueService {
-    int getPageCount(String searchName) throws DataConnectionException;
+    int getPageCount(String searchName) throws DataConnectionException, SQLException;
 
-    List<Issue> getIssues(String searchName, int pageNumber, String sortValue) throws DataConnectionException;
+    List<Issue> getIssues(String searchName, int pageNumber, String sortValue) throws DataConnectionException, SQLException;
 
     Issue getIssueById(int id) throws DataConnectionException;
 

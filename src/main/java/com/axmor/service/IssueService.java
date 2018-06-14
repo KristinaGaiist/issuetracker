@@ -14,6 +14,7 @@ import com.axmor.models.Issue;
 import com.axmor.models.Status;
 import com.axmor.service.interfaces.IIssueService;
 import com.axmor.service.interfaces.ISQLRequestGenerator;
+import org.h2.tools.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +42,8 @@ public class IssueService implements IIssueService {
     }
 
     @Override
-    public int getPageCount(String searchName) throws DataConnectionException {
+    public int getPageCount(String searchName) throws DataConnectionException, SQLException {
+
         String getIssuesRequest = requestGenerator.generateSelectIssuesCountRequest(searchName);
         try (ResultSet issueCountResultSet = DriverManager
                 .getConnection(
@@ -69,11 +71,10 @@ public class IssueService implements IIssueService {
             String searchName,
             int pageNumber,
             String sortValue)
-            throws DataConnectionException {
+            throws DataConnectionException, SQLException {
         List <Issue> issueList = new ArrayList <>();
         int startIndex = ( pageNumber - 1 ) * PAGE_ITEM_COUNT;
         String getIssuesRequest = requestGenerator.generateSelectAllIssuesRequest(sortValue, searchName, startIndex, PAGE_ITEM_COUNT);
-
         try (Statement statement = DriverManager
                 .getConnection(
                         settings.getDbHost(),

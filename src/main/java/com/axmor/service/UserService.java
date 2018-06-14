@@ -9,14 +9,12 @@ import com.axmor.models.ISettings;
 import com.axmor.server.AccessRigts;
 import com.axmor.service.interfaces.ISQLRequestGenerator;
 import com.axmor.service.interfaces.IUserService;
+import org.h2.tools.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
 
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,21 +30,22 @@ public class UserService implements IUserService {
         logger = LoggerFactory.getLogger("UserService");
     }
 
-    private boolean isLoginExist(String login) throws DataConnectionException {
-        try (ResultSet hasLoginResult = DriverManager
+    private boolean isLoginExist(String login) throws DataConnectionException, SQLException {
+        try (Connection connection = DriverManager
                 .getConnection(
                         settings.getDbHost(),
                         settings.getDbLogin(),
-                        settings.getDbPassword())
-                .createStatement()
-                .executeQuery(requestGenerator.generateUserLoginExistRequest(login))) {
+                        settings.getDbPassword())) {
+            try (ResultSet hasLoginResult = connection
+                    .createStatement()
+            .executeQuery(requestGenerator.generateUserLoginExistRequest(login))) {
+                return hasLoginResult.next();
+            } catch (SQLException e) {
+                logger.error("User can't be found. Check your generateUserLoginExistRequest.");
+                ErrorHelper.trowDateBaseConnectionOrRequestException(e);
 
-            return hasLoginResult.next();
-        } catch (SQLException e) {
-            logger.error("User can't be found. Check your generateUserLoginExistRequest.");
-            ErrorHelper.trowDateBaseConnectionOrRequestException(e);
-
-            return false;
+                return false;
+            }
         }
     }
 
@@ -55,7 +54,7 @@ public class UserService implements IUserService {
             String name,
             String password,
             List <String> validationErrors)
-            throws DataConnectionException {
+            throws DataConnectionException, SQLException {
         boolean userExist = isLoginExist(name);
         if (StringHelper.isNullOrEmpty(name)) {
             validationErrors.add("Name can't be empty.");
@@ -75,7 +74,7 @@ public class UserService implements IUserService {
             String name,
             String password,
             List <String> validationErrors)
-            throws DataConnectionException {
+            throws DataConnectionException, SQLException {
         boolean userExist = isLoginExist(name);
         if (StringHelper.isNullOrEmpty(name)) {
             validationErrors.add("Name can't be empty.");
@@ -96,7 +95,7 @@ public class UserService implements IUserService {
     private boolean isUserExist(
             String login,
             String password)
-            throws DataConnectionException {
+            throws DataConnectionException, SQLException {
         try (ResultSet hasUserResult = DriverManager
                 .getConnection(
                         settings.getDbHost(),

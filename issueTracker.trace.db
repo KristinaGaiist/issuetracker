@@ -1,0 +1,12 @@
+06-14 23:09:54 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Таблица "USERS" не найдена
+Table "USERS" not found; SQL statement:
+Select *from users; [42102-148]
+06-14 23:19:28 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Таблица "ISSUES" не найдена
+Table "ISSUES" not found; SQL statement:
+SELECT COUNT(issues.id) as count from issues  [42102-148]
+06-14 23:23:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Таблица "ISSUES" не найдена
+Table "ISSUES" not found; SQL statement:
+SELECT COUNT(issues.id) as count from issues  [42102-148]

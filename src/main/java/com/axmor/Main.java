@@ -4,17 +4,25 @@ import com.axmor.errorhelper.ErrorHelper;
 import com.axmor.models.ISettings;
 import com.axmor.models.Settings;
 import com.axmor.server.Controller;
+import org.h2.tools.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Properties;
 
-public class MainClass {
-    private static final Logger logger = LoggerFactory.getLogger("MainClass");
+public class Main {
+    private static final Logger logger = LoggerFactory.getLogger("Main");
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, SQLException {
+//        Server.createTcpServer().start();
+
+
         ISettings settings = loadSettings();
         Controller controller = new Controller(settings);
         controller.register();
@@ -22,8 +30,9 @@ public class MainClass {
 
     private static ISettings loadSettings() throws IOException {
         Properties property = new Properties();
-        try (InputStream fis = MainClass.class.getResourceAsStream("/config.properties")) {
-            property.load(fis);
+        InputStream is = Main.class.getResourceAsStream("/config.properties");
+        try (InputStreamReader isr = new InputStreamReader(is, Charset.forName("UTF-8"))) {
+            property.load(isr);
             Settings settings = new Settings();
             String host = property.getProperty("db.host");
             String login = property.getProperty("db.login");

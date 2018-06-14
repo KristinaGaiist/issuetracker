@@ -1,7 +1,7 @@
 package com.axmor.server;
 
 import com.axmor.ApplicationConstants;
-import com.axmor.MainClass;
+import com.axmor.Main;
 import com.axmor.RedirectService;
 import com.axmor.commands.*;
 import com.axmor.models.ISettings;
@@ -29,9 +29,8 @@ public class Controller {
 
     public Controller(ISettings settings) {
         port(1234);
-
         Configuration freeMarkerConfiguration = new Configuration(Configuration.VERSION_2_3_23);
-        ClassTemplateLoader templateLoader = new ClassTemplateLoader(MainClass.class, "/");
+        ClassTemplateLoader templateLoader = new ClassTemplateLoader(Main.class, "/");
         freeMarkerConfiguration.setTemplateLoader(templateLoader);
 
         freeMarkerEngine = new FreeMarkerEngine(freeMarkerConfiguration);
