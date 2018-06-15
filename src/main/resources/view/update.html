@@ -16,19 +16,19 @@
     </#list>
 </ul>
 <form class="inline-button" method='post'>
+    <#escape x as x?html>
     <p>
     <h2>Name: </h2>
-    <input class="text-type" type="text" name="issueName" placeholder="${issue.getName()?html}">
+    <input class="text-type" type="text" name="issueName" placeholder="${issue.getName()}">
     </p>
     <p>
     <h2>Status </h2>
         <select class="text-type" id="status" name="status">
-            <#escape x as x?html>
             <#list statuses as status>
                 <#if status.getId() == issue.getStatus().getId()>
-            <option value="${status.getId()?html}" selected>${status.getName()}</option>
+            <option value="${status.getId()}" selected>${status.getName()}</option>
                 <#else>
-            <option value="${status.getId()?html}">${status.getName()}</option>
+            <option value="${status.getId()}">${status.getName()}</option>
                 </#if>
             </#list>
         </select>
@@ -36,12 +36,12 @@
     <p>
 <h2>Description: </h2><br>
         <textarea class="text-area" type="text" name="description">
-                ${issue.getDescription()?html}
+                ${issue.getDescription()}
             </textarea>
     </p>
-</#escape>
     <input class="bubbly-button" type="submit" value="Save">
 </form>
-<a href="/show?issueId=${issue.getId()?html}"><input class="bubbly-button" type="submit" value="Cancel"></a>
+<a href="/show?issueId=${issue.getId()}"><input class="bubbly-button" type="submit" value="Cancel"></a>
+</#escape>
 </body>
 </html>

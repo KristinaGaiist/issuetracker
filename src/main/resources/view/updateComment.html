@@ -22,12 +22,11 @@
             <#escape x as x?html>
             <#list statuses as status>
                 <#if status.getId() == comment.getStatus().getId()>
-            <option value="${status.getId()?html}" selected>${status.getName()}</option>
+            <option value="${status.getId()}" selected>${status.getName()}</option>
                     <#else>
-            <option value="${status.getId()?html}">${status.getName()}</option>
+            <option value="${status.getId()}">${status.getName()}</option>
                 </#if>
             </#list>
-    </#escape>
         </select>
     </p>
     <p>
@@ -38,6 +37,7 @@
     </p>
     <input class="bubbly-button" type="submit" value="Save">
 </form>
-<a href="/show?issueId=${comment.getIssueId()?html}"><input class="bubbly-button" type="submit" value="Cancel"></a>
+<a href="/show?issueId=${comment.getIssueId()}"><input class="bubbly-button" type="submit" value="Cancel"></a>
+</#escape>
 </body>
 </html>

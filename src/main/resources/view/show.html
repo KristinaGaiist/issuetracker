@@ -19,9 +19,7 @@
 <h3>${issue.getAuthor()}</h3><br>
 <h2>Description: </h2><br>
 <h3 class="description">${issue.getDescription()}</h3><br>
-</#escape>
 <h2>Comments: </h2><br>
-<#escape x as x?html>
 <#list comments as comment>
     <h2>Update by </h2>
 <h3>${comment.getAuthor()} </h3>
@@ -44,21 +42,20 @@
         <#else><br>
     </#if>
 </#list>
-</#escape>
 </p>
 <br>
 <div class="round">
-    <form class="inline-button" action="/createComment?issueId=${issue.getId()?html}" method="post">
+    <form class="inline-button" action="/createComment?issueId=${issue.getId()}" method="post">
         <h2>Add Comment: </h2><br>
         <ul class="exception">
             <#list validationErrors as error>
-            <li>${error?html}</li>
+            <li>${error}</li>
             </#list>
         </ul>
         <h2>Status</h2>
         <select class="list-type" id="statusId" name="status">
             <#list statuses as status>
-            <option value="${status.getId()?html}">
+            <option value="${status.getId()}">
                 ${status.getName()?html}
                 </option>
             </#list>
@@ -70,14 +67,15 @@
         <input class="bubbly-button" type="submit" value="Add"><br>
     </form>
 </div>
-<a href='/update?issueId=${issue.getId()?html}'>
+<a href='/update?issueId=${issue.getId()}'>
     <input class="bubbly-button" type="submit" ${hiddenUpdate} value="Update">
 </a>
 <form class="inline-button" action='/issues' method='get'>
     <input class="bubbly-button" type="submit" value="Cancel">
 </form>
-<form class="inline-button" action="/delete?issueId=${issue.getId()?html}" method='post'>
+<form class="inline-button" action="/delete?issueId=${issue.getId()}" method='post'>
     <input class="bubbly-button" type="submit" ${hiddenDelete} value="Delete">
 </form>
+</#escape>
 </body>
 </html>
