@@ -11,12 +11,11 @@ mvn clean install
 ```
 
 ## Running
-Create connection with database h2. (./h2.sh command).
 Run the following command:
 ```
 mvn exec:java
 ```
-Open your web browser and visit http://localhost:1234/ 
+Open your web browser and visit http://localhost 
 You'll see the login page. 
 Enter data: login:admin password:123 (access right - full. It means, that you can add issues, update issues, delete issues, commenting issues, delete or update your comments and search issues).
                                         
