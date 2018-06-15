@@ -12,7 +12,7 @@
 </h1>
 <ul class="exception">
     <#list validationErrors as error>
-        <li>${error}</li>
+    <li>${error?html}</li>
     </#list>
 </ul>
 <form class="inline-button" method='post'>
@@ -21,9 +21,9 @@
         <select class="text-type" id="status" name="status">
             <#list statuses as status>
                 <#if status.getId() == comment.getStatus().getId()>
-                    <option value="${status.getId()}" selected>${status.getName()}</option>
+            <option value="${status.getId()?html}" selected>${status.getName()?html}</option>
                     <#else>
-                        <option value="${status.getId()}">${status.getName()}</option>
+            <option value="${status.getId()?html}">${status.getName()?html}</option>
                 </#if>
             </#list>
         </select>
@@ -31,11 +31,11 @@
     <p>
         <b>Text: </b><br>
         <textarea class="text-area" type="text" name="description">
-            ${comment.getName()}
+            ${comment.getName()?html}
             </textarea>
     </p>
     <input class="bubbly-button" type="submit" value="Save">
 </form>
-<a href="/show?issueId=${comment.getIssueId()}"><input class="bubbly-button" type="submit" value="Cancel"></a>
+<a href="/show?issueId=${comment.getIssueId()?html}"><input class="bubbly-button" type="submit" value="Cancel"></a>
 </body>
 </html>

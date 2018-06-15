@@ -1,5 +1,4 @@
 $button-bg: $fuschia;
-
 body{
   font-size: 6px;
   font-family: 'Helvetica', 'Arial', sans-serif;
@@ -30,7 +29,7 @@ body{
 
 h2 {
     font-size: 15px;
-    color: white;
+    color: pink;
     text-decoration: underline;
     display:inline;
     line-height: 1.5;
@@ -54,15 +53,30 @@ h2.italic {
     padding: 0px 0px 0px 2px;
 }
 
-h3.italic {
-    margin: 10px 5px 0px 38px;
-    padding: 0px 0px 0px 2px;
+h3.description {
+    margin: 10px 5px 0px 60px;
     line-height: 1.8;
     word-wrap: break-word;
 }
 
+h3.min {
+    line-height: 2.2;
+    color: aqua;
+    font-size: 10px;
+}
+
 .text-type {
     width: 15%;
+    padding: 5px 5px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.list-type {
+    width: 35%;
     padding: 5px 5px;
     margin: 8px 0;
     display: inline-block;

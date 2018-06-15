@@ -7,23 +7,26 @@
     <link rel="stylesheet" href="/css/generalStyle.css">
 </head>
 <body>
-<p>Create Issue</p>
+<h1>Create Issue</h1>
 <a href="/issues">
 </a>
 <ul class="exception">
     <#list validationErrors as error>
-        <li>${error}</li>
+    <li>${error?html}</li>
     </#list>
 </ul>
 <form class="inline-button" method='post'>
+    <#escape x as x?html>
     <p>
-        <b>Name: </b>
+    <h2>Name: </h2>
         <input class="text-type" type="text" name="issueName" placeholder="Task name..." value="${issueName}">
     </p>
     <p>
-        <b>Description: </b><br>
+    <h2>Description: </h2><br>
         <textarea class="text-area" name="description">${description}</textarea>
     </p>
+</
+#escape>
     <input class="bubbly-button" type="submit" value="Save">
 </form>
 <a href="/issues">

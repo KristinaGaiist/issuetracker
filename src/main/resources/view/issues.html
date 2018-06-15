@@ -12,7 +12,8 @@
     <input class="bubbly-button" type="submit" value="Show all">
 </form>
 <form class="inline-button" method="get">
-    <input class="search" type="text" name="searchName" placeholder="Search.." value="${hasSearchName?then(searchName, '')}">
+    <input class="search" type="text" name="searchName" placeholder="Search.."
+           value="${hasSearchName?then(searchName, '')?html}">
 </form>
 <table id="tableI">
     <thead>
@@ -26,12 +27,12 @@
     <#list issues as issue>
         <tr>
             <td>
-                <a href="/show?issueId=${issue.getId()}">
-                    ${issue.getName()}
+                <a href="/show?issueId=${issue.getId()?html}">
+                    ${issue.getName()?html}
                 </a>
             </td>
-            <td>${issue.getDate()}</td>
-            <td>${issue.getStatus().getName()}</td>
+            <td>${issue.getDate()?html}</td>
+            <td>${issue.getStatus().getName()?html}</td>
         </tr>
     </#list>
     </tbody>
@@ -40,16 +41,16 @@
     <a href="#">&laquo;</a>
     <#list pageList as page>
         <#if sortValue == "">
-            <a href="?pageIndex=${page}${hasSearchName?then('&searchName=' + searchName, '')}">${page}</a>
+    <a href="?pageIndex=${page?html}${hasSearchName?then('&searchName=' + searchName, '')?html}">${page?html}</a>
         <#else>
-            <a href="?pageIndex=${page}&sortValue=${sortValue}">${page}</a>
+    <a href="?pageIndex=${page?html}&sortValue=${sortValue?html}">${page?html}</a>
         </#if>
     </#list>
     <a href="#">&raquo;</a>
 </div>
 <br>
 <form class="inline-button" action='/create' method='get'>
-    <input class="bubbly-button" type="submit" ${hidden} value="New issue">
+    <input class="bubbly-button" type="submit" ${hidden?html} value="New issue">
 </form>
 
 <form class="inline-button" action='/out' method='post'>

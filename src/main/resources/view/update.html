@@ -12,37 +12,34 @@
 </h1>
 <ul class="exception">
     <#list validationErrors as error>
-        <li>${error}</li>
+    <li>${error?html}</li>
     </#list>
 </ul>
 <form class="inline-button" method='post'>
     <p>
-        <b>Name: </b>
-        <input class="text-type" type="text" name="issueName" placeholder="${issue.getName()}">
+    <h2>Name: </h2>
+    <input class="text-type" type="text" name="issueName" placeholder="${issue.getName()?html}">
     </p>
     <p>
-        <b>Status </b>
+    <h2>Status </h2>
         <select class="text-type" id="status" name="status">
             <#list statuses as status>
                 <#if status.getId() == issue.getStatus().getId()>
-                    <option value="${status.getId()}" selected>${status.getName()}</option>
+            <option value="${status.getId()?html}" selected>${status.getName()?html}</option>
                 <#else>
-                    <option value="${status.getId()}">${status.getName()}</option>
+            <option value="${status.getId()?html}">${status.getName()?html}</option>
                 </#if>
             </#list>
         </select>
     </p>
     <p>
-        <b>Description: </b><br>
+<h2>Description: </h2><br>
         <textarea class="text-area" type="text" name="description">
-                ${issue.getDescription()}
+                ${issue.getDescription()?html}
             </textarea>
-    </p>
-    <p>
-        <b>Comment: </b><br>
     </p>
     <input class="bubbly-button" type="submit" value="Save">
 </form>
-<a href="/show?issueId=${issue.getId()}"><input class="bubbly-button" type="submit" value="Cancel"></a>
+<a href="/show?issueId=${issue.getId()?html}"><input class="bubbly-button" type="submit" value="Cancel"></a>
 </body>
 </html>

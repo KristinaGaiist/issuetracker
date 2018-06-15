@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" type="text/staticFiles" href="my.staticFiles">
@@ -7,6 +6,7 @@
     <link rel="stylesheet" href="/css/generalStyle.css">
     <title>IssueTracker</title>
 </head>
+<#escape x as x?html>
 <h1>
     ${issue.getName()}
 </h1>
@@ -18,24 +18,25 @@
 <h2>Author: </h2>
 <h3>${issue.getAuthor()}</h3><br>
 <h2>Description: </h2><br>
-<h3>${issue.getDescription()}</h3><br>
+<h3 class="description">${issue.getDescription()}</h3><br>
+</#escape>
 <h2>Comments: </h2><br>
+<#escape x as x?html>
 <#list comments as comment>
     <h2>Update by </h2>
-    <h3>${comment.getAuthor()} </h3>
-    <h3>${comment.getDate()}</h3>
+<h3>${comment.getAuthor()?html} </h3>
+<h3>${comment.getDate()?html}</h3>
     <#if comment.getAuthor() = userName>
-        <a href='/updateComment?commentId=${comment.getId()}'>
+<a href='/updateComment?commentId=${comment.getId()?html}'>
             <h3 class="min">[update]</h3><br>
         </a>
         <#else><br>
     </#if>
-
     <h2>Status changed to </h2>
     <h3>${comment.getStatus().getName()}</h3><br>
 
     <h2>Comments </h2>
-    <h3>${comment.getName()}</h3>
+<h3>${comment.getName()?html}</h3>
     <#if comment.getAuthor() = userName>
         <a href="/deleteComment?commentId=${comment.getId()}" >
         <h3 class="min">[delete]</h3><br>
@@ -43,21 +44,22 @@
         <#else><br>
     </#if>
 </#list>
+</#escape>
 </p>
 <br>
 <div class="round">
-    <form class="inline-button" action="/createComment?issueId=${issue.getId()}" method="post">
+    <form class="inline-button" action="/createComment?issueId=${issue.getId()?html}" method="post">
         <h2>Add Comment: </h2><br>
         <ul class="exception">
             <#list validationErrors as error>
-                <li>${error}</li>
+            <li>${error?html}</li>
             </#list>
         </ul>
         <h2>Status</h2>
-        <select class="text-type" id="statusId" name="status">
+        <select class="list-type" id="statusId" name="status">
             <#list statuses as status>
-                <option value="${status.getId()}">
-                    ${status.getName()}
+            <option value="${status.getId()?html}">
+                ${status.getName()?html}
                 </option>
             </#list>
         </select>
@@ -68,14 +70,14 @@
         <input class="bubbly-button" type="submit" value="Add"><br>
     </form>
 </div>
-<a href='/update?issueId=${issue.getId()}'>
-    <input class="bubbly-button" type="submit" ${hiddenUpdate} value="Update">
+<a href='/update?issueId=${issue.getId()?html}'>
+    <input class="bubbly-button" type="submit" ${hiddenUpdate?html} value="Update">
 </a>
 <form class="inline-button" action='/issues' method='get'>
     <input class="bubbly-button" type="submit" value="Cancel">
 </form>
-<form class="inline-button" action="/delete?issueId=${issue.getId()}" method='post'>
-    <input class="bubbly-button" type="submit" ${hiddenDelete} value="Delete">
+<form class="inline-button" action="/delete?issueId=${issue.getId()?html}" method='post'>
+    <input class="bubbly-button" type="submit" ${hiddenDelete?html} value="Delete">
 </form>
 </body>
 </html>
