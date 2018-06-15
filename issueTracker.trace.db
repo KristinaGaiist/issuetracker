@@ -5886,3 +5886,15 @@ This method is not allowed for a prepared statement; use a regular statement ins
 	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:654)
 	at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:572)
 	at java.lang.Thread.run(Thread.java:748)
+06-15 17:06:45 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Синтаксическая ошибка в выражении SQL "INSERT INTO ISSUES (NAME, AUTHOR, DESCRIPTION, DATE, STATUS_ID) VALUES('tttt', 'admin', '<script>alert('LOLOLOLOL[*]')</script>', '2018-06-15', 1) "; ожидалось ")"
+Syntax error in SQL statement "INSERT INTO ISSUES (NAME, AUTHOR, DESCRIPTION, DATE, STATUS_ID) VALUES('tttt', 'admin', '<script>alert('LOLOLOLOL[*]')</script>', '2018-06-15', 1) "; expected ")"; SQL statement:
+INSERT INTO issues (name, author, description, date, status_id) VALUES('tttt', 'admin', '<script>alert('lolololol')</script>', '2018-06-15', 1) [42001-148]
+06-15 17:09:47 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Синтаксическая ошибка в выражении SQL "INSERT INTO ISSUES (NAME, AUTHOR, DESCRIPTION, DATE, STATUS_ID) VALUES('lolololo', 'admin', '<script>alert('LOLOLOL[*] ')</script>', '2018-06-15', 1) "; ожидалось ")"
+Syntax error in SQL statement "INSERT INTO ISSUES (NAME, AUTHOR, DESCRIPTION, DATE, STATUS_ID) VALUES('lolololo', 'admin', '<script>alert('LOLOLOL[*] ')</script>', '2018-06-15', 1) "; expected ")"; SQL statement:
+INSERT INTO issues (name, author, description, date, status_id) VALUES('lolololo', 'admin', '<script>alert('lololol ')</script>', '2018-06-15', 1) [42001-148]
+06-15 17:12:14 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Синтаксическая ошибка в выражении SQL "INSERT INTO ISSUES (NAME, AUTHOR, DESCRIPTION, DATE, STATUS_ID) VALUES('lolo', 'admin', '<script>alert('LOLOLOL[*]')</script>', '2018-06-15', 1) "; ожидалось ")"
+Syntax error in SQL statement "INSERT INTO ISSUES (NAME, AUTHOR, DESCRIPTION, DATE, STATUS_ID) VALUES('lolo', 'admin', '<script>alert('LOLOLOL[*]')</script>', '2018-06-15', 1) "; expected ")"; SQL statement:
+INSERT INTO issues (name, author, description, date, status_id) VALUES('lolo', 'admin', '<script>alert('lololol')</script>', '2018-06-15', 1) [42001-148]

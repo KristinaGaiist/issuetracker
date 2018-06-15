@@ -19,13 +19,15 @@
     <p>
         <b>Status </b>
         <select class="text-type" id="status" name="status">
+            <#escape x as x?html>
             <#list statuses as status>
                 <#if status.getId() == comment.getStatus().getId()>
-            <option value="${status.getId()?html}" selected>${status.getName()?html}</option>
+            <option value="${status.getId()?html}" selected>${status.getName()}</option>
                     <#else>
-            <option value="${status.getId()?html}">${status.getName()?html}</option>
+            <option value="${status.getId()?html}">${status.getName()}</option>
                 </#if>
             </#list>
+    </#escape>
         </select>
     </p>
     <p>

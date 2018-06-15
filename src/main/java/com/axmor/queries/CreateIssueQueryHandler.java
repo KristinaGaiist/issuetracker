@@ -27,7 +27,7 @@ public class CreateIssueQueryHandler implements Route {
     }
 
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public Object handle(Request request, Response response) {
         if (redirectService.redirectIfNotAuthenticate(request, response)) {
             return null;
         }

@@ -23,11 +23,12 @@
     <p>
     <h2>Status </h2>
         <select class="text-type" id="status" name="status">
+            <#escape x as x?html>
             <#list statuses as status>
                 <#if status.getId() == issue.getStatus().getId()>
-            <option value="${status.getId()?html}" selected>${status.getName()?html}</option>
+            <option value="${status.getId()?html}" selected>${status.getName()}</option>
                 <#else>
-            <option value="${status.getId()?html}">${status.getName()?html}</option>
+            <option value="${status.getId()?html}">${status.getName()}</option>
                 </#if>
             </#list>
         </select>
@@ -38,6 +39,7 @@
                 ${issue.getDescription()?html}
             </textarea>
     </p>
+</#escape>
     <input class="bubbly-button" type="submit" value="Save">
 </form>
 <a href="/show?issueId=${issue.getId()?html}"><input class="bubbly-button" type="submit" value="Cancel"></a>

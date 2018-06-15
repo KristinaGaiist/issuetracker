@@ -24,33 +24,37 @@
     </tr>
     </thead>
     <tbody>
+    <#escape x as x?html>
     <#list issues as issue>
         <tr>
             <td>
-                <a href="/show?issueId=${issue.getId()?html}">
-                    ${issue.getName()?html}
+                <a href="/show?issueId=${issue.getId()}">
+                    ${issue.getName()}
                 </a>
             </td>
-            <td>${issue.getDate()?html}</td>
-            <td>${issue.getStatus().getName()?html}</td>
+            <td>${issue.getDate()}</td>
+            <td>${issue.getStatus().getName()}</td>
         </tr>
     </#list>
+    </#escape>
     </tbody>
 </table>
 <div class="pagination">
     <a href="#">&laquo;</a>
+    <#escape x as x?html>
     <#list pageList as page>
         <#if sortValue == "">
-    <a href="?pageIndex=${page?html}${hasSearchName?then('&searchName=' + searchName, '')?html}">${page?html}</a>
+    <a href="?pageIndex=${page?html}${hasSearchName?then('&searchName=' + searchName, '')?html}">${page}</a>
         <#else>
-    <a href="?pageIndex=${page?html}&sortValue=${sortValue?html}">${page?html}</a>
+    <a href="?pageIndex=${page?html}&sortValue=${sortValue?html}">${page}</a>
         </#if>
     </#list>
+</#escape>
     <a href="#">&raquo;</a>
 </div>
 <br>
 <form class="inline-button" action='/create' method='get'>
-    <input class="bubbly-button" type="submit" ${hidden?html} value="New issue">
+    <input class="bubbly-button" type="submit" ${hidden} value="New issue">
 </form>
 
 <form class="inline-button" action='/out' method='post'>

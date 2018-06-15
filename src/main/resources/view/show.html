@@ -24,10 +24,10 @@
 <#escape x as x?html>
 <#list comments as comment>
     <h2>Update by </h2>
-<h3>${comment.getAuthor()?html} </h3>
-<h3>${comment.getDate()?html}</h3>
+<h3>${comment.getAuthor()} </h3>
+<h3>${comment.getDate()}</h3>
     <#if comment.getAuthor() = userName>
-<a href='/updateComment?commentId=${comment.getId()?html}'>
+<a href='/updateComment?commentId=${comment.getId()}'>
             <h3 class="min">[update]</h3><br>
         </a>
         <#else><br>
@@ -36,7 +36,7 @@
     <h3>${comment.getStatus().getName()}</h3><br>
 
     <h2>Comments </h2>
-<h3>${comment.getName()?html}</h3>
+<h3>${comment.getName()}</h3>
     <#if comment.getAuthor() = userName>
         <a href="/deleteComment?commentId=${comment.getId()}" >
         <h3 class="min">[delete]</h3><br>
@@ -71,13 +71,13 @@
     </form>
 </div>
 <a href='/update?issueId=${issue.getId()?html}'>
-    <input class="bubbly-button" type="submit" ${hiddenUpdate?html} value="Update">
+    <input class="bubbly-button" type="submit" ${hiddenUpdate} value="Update">
 </a>
 <form class="inline-button" action='/issues' method='get'>
     <input class="bubbly-button" type="submit" value="Cancel">
 </form>
 <form class="inline-button" action="/delete?issueId=${issue.getId()?html}" method='post'>
-    <input class="bubbly-button" type="submit" ${hiddenDelete?html} value="Delete">
+    <input class="bubbly-button" type="submit" ${hiddenDelete} value="Delete">
 </form>
 </body>
 </html>
