@@ -27,7 +27,7 @@ public class Controller {
     private final ICommentService commentService;
 
     public Controller(DataSource dataSource) {
-        port(1234);
+        port(80);
         Configuration freeMarkerConfiguration = new Configuration(Configuration.VERSION_2_3_23);
         ClassTemplateLoader templateLoader = new ClassTemplateLoader(Main.class, "/");
         freeMarkerConfiguration.setTemplateLoader(templateLoader);
