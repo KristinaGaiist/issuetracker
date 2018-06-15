@@ -1,10 +1,10 @@
 package com.axmor.server;
 
 import com.axmor.ApplicationConstants;
+import com.axmor.DataSource;
 import com.axmor.Main;
 import com.axmor.RedirectService;
 import com.axmor.commands.*;
-import com.axmor.models.ISettings;
 import com.axmor.queries.*;
 import com.axmor.service.CommentService;
 import com.axmor.service.IssueService;
@@ -13,10 +13,9 @@ import com.axmor.service.UserService;
 import com.axmor.service.interfaces.ICommentService;
 import com.axmor.service.interfaces.IIssueService;
 import com.axmor.service.interfaces.IUserService;
-import spark.template.freemarker.FreeMarkerEngine;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
-
+import spark.template.freemarker.FreeMarkerEngine;
 
 import static spark.Spark.*;
 
@@ -27,18 +26,18 @@ public class Controller {
     private final RedirectService redirectService;
     private final ICommentService commentService;
 
-    public Controller(ISettings settings) {
-        port(1234);
+    public Controller(DataSource dataSource) {
+        port(80);
         Configuration freeMarkerConfiguration = new Configuration(Configuration.VERSION_2_3_23);
         ClassTemplateLoader templateLoader = new ClassTemplateLoader(Main.class, "/");
         freeMarkerConfiguration.setTemplateLoader(templateLoader);
 
         freeMarkerEngine = new FreeMarkerEngine(freeMarkerConfiguration);
         SQLRequestGenerator requestGenerator = new SQLRequestGenerator();
-        issueService = new IssueService(requestGenerator, settings);
-        userService = new UserService(settings);
+        issueService = new IssueService(requestGenerator, dataSource);
+        userService = new UserService(dataSource);
         redirectService = new RedirectService(userService);
-        commentService = new CommentService(requestGenerator, settings);
+        commentService = new CommentService(requestGenerator, dataSource);
     }
 
     public void register() {

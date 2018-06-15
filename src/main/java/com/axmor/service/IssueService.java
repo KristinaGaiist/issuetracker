@@ -1,5 +1,6 @@
 package com.axmor.service;
 
+import com.axmor.DataSource;
 import com.axmor.Entities;
 import com.axmor.errorhelper.ErrorHelper;
 import com.axmor.exceptions.DataConnectionException;
@@ -9,51 +10,40 @@ import com.axmor.mapping.CommentMapping;
 import com.axmor.mapping.IssueMapping;
 import com.axmor.mapping.StatusMapping;
 import com.axmor.models.Comment;
-import com.axmor.models.ISettings;
 import com.axmor.models.Issue;
 import com.axmor.models.Status;
 import com.axmor.service.interfaces.IIssueService;
 import com.axmor.service.interfaces.ISQLRequestGenerator;
-import org.h2.tools.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class IssueService implements IIssueService {
-    private static final int PAGE_ITEM_COUNT = 7;
-
     private final Logger logger;
     private final ISQLRequestGenerator requestGenerator;
-    private final ISettings settings;
+    private final DataSource dataSource;
 
-    public IssueService(ISQLRequestGenerator requestGenerator, ISettings settings) {
-        ArgumentHelper.ensureNotNull("settings", settings);
+    public IssueService(ISQLRequestGenerator requestGenerator, DataSource dataSource) {
+        ArgumentHelper.ensureNotNull("dataSource", dataSource);
+        this.dataSource = dataSource;
         ArgumentHelper.ensureNotNull("requestGenerator", requestGenerator);
-        this.settings = settings;
         this.requestGenerator = requestGenerator;
         logger = LoggerFactory.getLogger("IssueService");
     }
 
     @Override
-    public int getPageCount(String searchName) throws DataConnectionException, SQLException {
-
+    public int getPageCount(String searchName) throws DataConnectionException {
         String getIssuesRequest = requestGenerator.generateSelectIssuesCountRequest(searchName);
-        try (ResultSet issueCountResultSet = DriverManager
-                .getConnection(
-                        settings.getDbHost(),
-                        settings.getDbLogin(),
-                        settings.getDbPassword())
-                .createStatement()
-                .executeQuery(getIssuesRequest)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(getIssuesRequest);
+             ResultSet issueCountResultSet = preparedStatement.executeQuery()) {
             if (issueCountResultSet.next()) {
-                return (int) Math.ceil((double) issueCountResultSet.getInt(Entities.Issue.COUNT) / (double) PAGE_ITEM_COUNT);
+                return (int) Math.ceil((double) issueCountResultSet.getInt(
+                        Entities.Issue.COUNT) / (double) Entities.Issue.PAGE_ITEM_COUNT);
             } else {
                 ErrorHelper.trowDateBaseConnectionOrRequestException();
                 return 0;
@@ -71,17 +61,17 @@ public class IssueService implements IIssueService {
             String searchName,
             int pageNumber,
             String sortValue)
-            throws DataConnectionException, SQLException {
+            throws DataConnectionException {
         List <Issue> issueList = new ArrayList <>();
-        int startIndex = ( pageNumber - 1 ) * PAGE_ITEM_COUNT;
-        String getIssuesRequest = requestGenerator.generateSelectAllIssuesRequest(sortValue, searchName, startIndex, PAGE_ITEM_COUNT);
-        try (Statement statement = DriverManager
-                .getConnection(
-                        settings.getDbHost(),
-                        settings.getDbLogin(),
-                        settings.getDbPassword())
-                .createStatement();
-             ResultSet issueResultSet = statement.executeQuery(getIssuesRequest)) {
+        int startIndex = (pageNumber - 1) * Entities.Issue.PAGE_ITEM_COUNT;
+        String getIssuesRequest = requestGenerator.generateSelectAllIssuesRequest(
+                sortValue,
+                searchName,
+                startIndex,
+                Entities.Issue.PAGE_ITEM_COUNT);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(getIssuesRequest);
+             ResultSet issueResultSet = preparedStatement.executeQuery()) {
             while (issueResultSet.next()) {
                 Issue issue = IssueMapping.map(issueResultSet);
                 issueList.add(issue);
@@ -100,13 +90,9 @@ public class IssueService implements IIssueService {
     public Issue getIssueById(int id) throws DataConnectionException {
         Issue issue = new Issue();
         String getIssuesRequest = requestGenerator.generateIssueByIdRequest(id);
-        try (ResultSet issueResultSet = DriverManager
-                .getConnection(
-                        settings.getDbHost(),
-                        settings.getDbLogin(),
-                        settings.getDbPassword())
-                .createStatement()
-                .executeQuery(getIssuesRequest)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(getIssuesRequest);
+             ResultSet issueResultSet = preparedStatement.executeQuery()) {
             while (issueResultSet.next()) {
                 issue = IssueMapping.map(issueResultSet);
                 setComment(id, issue);
@@ -126,13 +112,9 @@ public class IssueService implements IIssueService {
             Issue issue)
             throws DataConnectionException {
         String getCommentsRequest = requestGenerator.generateSelectWithCommentsRequest(id);
-        try (ResultSet commentResultSet = DriverManager
-                .getConnection(
-                        settings.getDbHost(),
-                        settings.getDbLogin(),
-                        settings.getDbPassword())
-                .createStatement()
-                .executeQuery(getCommentsRequest)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(getCommentsRequest);
+             ResultSet commentResultSet = preparedStatement.executeQuery()) {
             while (commentResultSet.next()) {
                 Comment comment = CommentMapping.map(commentResultSet);
                 issue.getCommentList().add(comment);
@@ -147,13 +129,9 @@ public class IssueService implements IIssueService {
     public List <Status> getStatuses() throws DataConnectionException {
         List <Status> statusList = new ArrayList <>();
         String getStatusesRequest = requestGenerator.generateSelectStatusesRequest();
-        try (Statement statement = DriverManager
-                .getConnection(
-                        settings.getDbHost(),
-                        settings.getDbLogin(),
-                        settings.getDbPassword())
-                .createStatement();
-             ResultSet statusResultSet = statement.executeQuery(getStatusesRequest)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(getStatusesRequest);
+             ResultSet statusResultSet = preparedStatement.executeQuery()) {
             while (statusResultSet.next()) {
                 Status status = StatusMapping.map(statusResultSet, Entities.ID);
                 statusList.add(status);
@@ -172,19 +150,14 @@ public class IssueService implements IIssueService {
             String author,
             String description)
             throws DataConnectionException {
-        try (Statement statement = DriverManager
-                .getConnection(
-                        settings.getDbHost(),
-                        settings.getDbLogin(),
-                        settings.getDbPassword())
-                .createStatement()) {
-
-            String request = requestGenerator.generateCreateIssueRequest(
-                    name,
-                    author,
-                    description,
-                    new Date(),
-                    1);
+        String request = requestGenerator.generateCreateIssueRequest(
+                name,
+                author,
+                description,
+                new Date(),
+                1);
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement()) {
             statement.execute(request);
         } catch (SQLException e) {
             logger.error("Issue can't be create. Check your generateCreateIssueRequest.");
@@ -199,14 +172,10 @@ public class IssueService implements IIssueService {
             String description,
             int status)
             throws DataConnectionException {
-        try (Statement statement = DriverManager
-                .getConnection(
-                        settings.getDbHost(),
-                        settings.getDbLogin(),
-                        settings.getDbPassword())
-                .createStatement()) {
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement();) {
             String getUpdateIssuesRequest = requestGenerator.generateUpdateIssueRequest(name, description, status, id);
-            statement.executeUpdate(getUpdateIssuesRequest);
+            statement.execute(getUpdateIssuesRequest);
         } catch (SQLException e) {
             logger.error("Issue can't be update. Check your generateUpdateIssueRequest.");
             ErrorHelper.trowDateBaseConnectionOrRequestException(e);
@@ -215,12 +184,8 @@ public class IssueService implements IIssueService {
 
     @Override
     public void delete(int id) throws DataConnectionException {
-        try (Statement statement = DriverManager
-                .getConnection(
-                        settings.getDbHost(),
-                        settings.getDbLogin(),
-                        settings.getDbPassword())
-                .createStatement()) {
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement()) {
             String getDeleteIssueRequest = requestGenerator.generateDeleteIssueRequest(id);
             statement.execute(getDeleteIssueRequest);
         } catch (SQLException e) {

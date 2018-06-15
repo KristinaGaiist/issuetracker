@@ -10,6 +10,7 @@ public class Entities {
         public static final String AUTHOR = "author";
         public static final String STATUS_ID = "status_id";
         public static final String COUNT = "count";
+        public static final int PAGE_ITEM_COUNT = 7;
     }
 
     public static class Comment {

@@ -4,7 +4,6 @@ import com.axmor.errorhelper.ErrorHelper;
 import com.axmor.models.ISettings;
 import com.axmor.models.Settings;
 import com.axmor.server.Controller;
-import org.h2.tools.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,23 +11,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Properties;
 
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger("Main");
 
-    public static void main(String[] args) throws IOException, SQLException {
-//        Server.createTcpServer().start();
-
-
+    public static void main(String[] args) {
         ISettings settings = loadSettings();
-        Controller controller = new Controller(settings);
+        DataSource dataSource = new DataSource(settings);
+        Controller controller = new Controller(dataSource);
         controller.register();
     }
 
-    private static ISettings loadSettings() throws IOException {
+    private static ISettings loadSettings() {
         Properties property = new Properties();
         InputStream is = Main.class.getResourceAsStream("/config.properties");
         try (InputStreamReader isr = new InputStreamReader(is, Charset.forName("UTF-8"))) {

@@ -1,15 +1,14 @@
 package com.axmor.service;
 
 import com.axmor.ApplicationConstants;
+import com.axmor.DataSource;
 import com.axmor.errorhelper.ErrorHelper;
 import com.axmor.exceptions.DataConnectionException;
 import com.axmor.helpers.ArgumentHelper;
 import com.axmor.helpers.StringHelper;
-import com.axmor.models.ISettings;
 import com.axmor.server.AccessRigts;
 import com.axmor.service.interfaces.ISQLRequestGenerator;
 import com.axmor.service.interfaces.IUserService;
-import org.h2.tools.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -22,30 +21,25 @@ import java.util.Map;
 public class UserService implements IUserService {
     private final ISQLRequestGenerator requestGenerator = new SQLRequestGenerator();
     private final Logger logger;
-    private final ISettings settings;
+    private final DataSource dataSource;
 
-    public UserService(ISettings settings) {
-        ArgumentHelper.ensureNotNull("settings", settings);
-        this.settings = settings;
+    public UserService(DataSource dataSource) {
+        ArgumentHelper.ensureNotNull("dataSource", dataSource);
+        this.dataSource = dataSource;
         logger = LoggerFactory.getLogger("UserService");
     }
 
-    private boolean isLoginExist(String login) throws DataConnectionException, SQLException {
-        try (Connection connection = DriverManager
-                .getConnection(
-                        settings.getDbHost(),
-                        settings.getDbLogin(),
-                        settings.getDbPassword())) {
-            try (ResultSet hasLoginResult = connection
-                    .createStatement()
-            .executeQuery(requestGenerator.generateUserLoginExistRequest(login))) {
-                return hasLoginResult.next();
-            } catch (SQLException e) {
-                logger.error("User can't be found. Check your generateUserLoginExistRequest.");
-                ErrorHelper.trowDateBaseConnectionOrRequestException(e);
+    private boolean isLoginExist(String login) throws DataConnectionException {
+        String request = requestGenerator.generateUserLoginExistRequest(login);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(request);
+             ResultSet hasLoginResult = preparedStatement.executeQuery()) {
+            return hasLoginResult.next();
+        } catch (SQLException e) {
+            logger.error("User can't be found. Check your generateUserLoginExistRequest.");
+            ErrorHelper.trowDateBaseConnectionOrRequestException(e);
 
-                return false;
-            }
+            return false;
         }
     }
 
@@ -53,8 +47,8 @@ public class UserService implements IUserService {
     public boolean validateRegisterUser(
             String name,
             String password,
-            List <String> validationErrors)
-            throws DataConnectionException, SQLException {
+            List<String> validationErrors)
+            throws DataConnectionException {
         boolean userExist = isLoginExist(name);
         if (StringHelper.isNullOrEmpty(name)) {
             validationErrors.add("Name can't be empty.");
@@ -73,8 +67,8 @@ public class UserService implements IUserService {
     public boolean validateLogInUser(
             String name,
             String password,
-            List <String> validationErrors)
-            throws DataConnectionException, SQLException {
+            List<String> validationErrors)
+            throws DataConnectionException {
         boolean userExist = isLoginExist(name);
         if (StringHelper.isNullOrEmpty(name)) {
             validationErrors.add("Name can't be empty.");
@@ -95,14 +89,11 @@ public class UserService implements IUserService {
     private boolean isUserExist(
             String login,
             String password)
-            throws DataConnectionException, SQLException {
-        try (ResultSet hasUserResult = DriverManager
-                .getConnection(
-                        settings.getDbHost(),
-                        settings.getDbLogin(),
-                        settings.getDbPassword())
-                .createStatement()
-                .executeQuery(requestGenerator.generateUserExistRequest(login, password))) {
+            throws DataConnectionException {
+        String request = requestGenerator.generateUserExistRequest(login, password);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(request);
+             ResultSet hasUserResult = preparedStatement.executeQuery()) {
             return hasUserResult.next();
         } catch (SQLException e) {
             logger.error("User can't be found. Check your generateUserExistRequest.");
@@ -117,13 +108,10 @@ public class UserService implements IUserService {
             String login,
             String password)
             throws DataConnectionException {
-        try (Statement statement = DriverManager
-                .getConnection(
-                        settings.getDbHost(),
-                        settings.getDbLogin(),
-                        settings.getDbPassword())
-                .createStatement()) {
-            statement.execute(requestGenerator.generateCreateUserRequest(login, password, 3));
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement()) {
+            String request = requestGenerator.generateCreateUserRequest(login, password, 3);
+            statement.execute(request);
         } catch (SQLException e) {
             logger.error("User can't be create. Check your generateCreateUserRequest.");
             ErrorHelper.trowDateBaseConnectionOrRequestException(e);
@@ -137,12 +125,12 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Map <String, Object> setHidden(Request request) throws DataConnectionException {
+    public Map<String, Object> setHidden(Request request) throws DataConnectionException {
         String login = request.session().attribute(ApplicationConstants.SESSION_USER_NAME);
         int accessRight = getUserAccessRight(login);
         String hiddenDelete = "hiddenDelete";
         String hiddenUpdate = "hiddenUpdate";
-        Map <String, Object> map = new HashMap <>();
+        Map<String, Object> map = new HashMap<>();
         if (accessRight == AccessRigts.VIEW_ONLY.ordinal() + 1) {
             map.put(ApplicationConstants.HIDDEN, ApplicationConstants.HIDDEN);
             map.put(hiddenDelete, ApplicationConstants.HIDDEN);
@@ -162,13 +150,10 @@ public class UserService implements IUserService {
 
     private int getUserAccessRight(String login) throws DataConnectionException {
         int accessRight = 0;
-        try (ResultSet userAccessRightResult = DriverManager
-                .getConnection(
-                        settings.getDbHost(),
-                        settings.getDbLogin(),
-                        settings.getDbPassword())
-                .createStatement()
-                .executeQuery(requestGenerator.generateSelectUserByLoginRequest(login))) {
+        String request = requestGenerator.generateSelectUserByLoginRequest(login);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(request);
+             ResultSet userAccessRightResult = preparedStatement.executeQuery()) {
             while (userAccessRightResult.next()) {
                 accessRight = userAccessRightResult.getInt("access_right_id");
             }
